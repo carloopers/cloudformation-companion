@@ -1,0 +1,16 @@
+{
+  "name": "cloudformation-companion",
+  "version": "1.0.0",
+  "description": "Companion to fetch resources from outputs or list of resources from other stacks",
+  "main": "lambda/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "aws",
+    "cloudformation",
+    "io"
+  ],
+  "author": "Karel Malbroukou Moendzenahou <karel.malbroukou@gmail.com>",
+  "license": "MIT"
+}
