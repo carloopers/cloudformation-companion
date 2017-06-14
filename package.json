@@ -4,7 +4,8 @@
   "description": "Companion to fetch resources from outputs or list of resources from other stacks",
   "main": "lambda/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "aws",
@@ -12,5 +13,15 @@
     "io"
   ],
   "author": "Karel Malbroukou Moendzenahou <karel.malbroukou@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.69.0"
+  },
+  "devDependencies": {
+    "aws-sdk-mock": "^1.7.0",
+    "jest": "^20.0.4"
+  },
+  "jest": {
+    "modulePaths": [ "./app" ]
+  }
 }
