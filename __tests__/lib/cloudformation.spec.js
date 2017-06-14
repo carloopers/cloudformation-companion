@@ -15,4 +15,18 @@ describe('cloudformation', () => {
       expect(cloudformation.filterOutputs(listToFilter, mask)).toEqual(ret)
     })
   })
+
+  describe('filterResources', () => {
+    it('should only return resources present in the mask', () => {
+      let mask = [ 'log1', 'log2', 'log3' ]
+      let ret = { 'log1': 'phys1', 'log3': 'phys3' }
+      let listToFilter = [
+        { LogicalResourceId: 'log1', PhysicalResourceId: 'phys1' },
+        { LogicalResourceId: 'log4', PhysicalResourceId: 'phys4' },
+        { LogicalResourceId: 'log3', PhysicalResourceId: 'phys3' }
+      ]
+
+      expect(cloudformation.filterResources(listToFilter, mask)).toEqual(ret)
+    })
+  })
 })

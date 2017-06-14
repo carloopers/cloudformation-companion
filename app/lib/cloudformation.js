@@ -5,4 +5,12 @@ const filterOutputs = (list, mask) => {
   }).reduce( (acc, newVal) => Object.assign({}, acc, newVal))
 }
 
+const filterResources = (list, mask) => {
+  return list.map( r => {
+    if (mask.indexOf(r.LogicalResourceId) > -1)
+      return { [r.LogicalResourceId]: r.PhysicalResourceId }
+  }).reduce( (acc, newVal) => Object.assign({}, acc, newVal))
+}
+
 exports.filterOutputs = filterOutputs
+exports.filterResources = filterResources
