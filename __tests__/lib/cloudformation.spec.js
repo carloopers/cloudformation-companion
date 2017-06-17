@@ -54,4 +54,23 @@ describe('CloudformationPlugin', () => {
       })
     })
   })
+
+  describe('extractResources', () => {
+    it('should call filterResources with list of resources and the mask', (done) => {
+      let stack = 'test'
+      let mask = [ 'key1', 'key2', 'key3' ]
+      let paramTest = { StackResources: [ { LogicalResourceId: 'log1', PhysicalResourceId: 'phys1' } ] }
+      let describeStackResources = Promise.resolve(paramTest)
+
+      AWS.mock('CloudFormation', 'describeStackResources', describeStackResources)
+      plugin = new cloudformation()
+      plugin.filterResources = jest.fn()
+
+      plugin.extractResources(stack, mask).then( res => {
+        expect(plugin.filterResources).toBeCalledWith(paramTest.StackResources, mask)
+        plugin.filterResources.mockClear()
+        done()
+      })
+    })
+  })
 })

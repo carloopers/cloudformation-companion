@@ -20,9 +20,30 @@ class CloudformationPlugin {
     }).reduce( (acc, newVal) => Object.assign({}, acc, newVal))
   }
 
+  extractResources(stack, resources) {
+    return this.cloudformation.describeStackResources({ StackName: stack }).promise()
+      .then( response => this.filterResources(response.StackResources, resources) )
+  }
+
   extractOutputs(stack, outputs) {
     return this.cloudformation.describeStacks({ StackName: stack }).promise()
       .then( response => response.Stacks[0].Outputs ? this.filterOutputs(response.Stacks[0].Outputs, outputs) : {} )
+  }
+
+  extract(stack, attributes) {
+    return new Promise( (resolve, reject ) => {
+      try {
+        let operations = []
+        operations.push(attributes.Outputs ? this.extractOutputs(stack, attributes.Outputs) : {})
+        operations.push(attributes.Resources ? this.extractResources(stack, attributes.Resources) : {})
+
+        let promises = Promise.all(operations)
+          .then( values => resolve({ Outputs: values[0], Resources: values[1] }))
+          .catch( reason => reject(reason))
+      } catch(err) {
+        reject(err)
+      }
+    })
   }
 }
 
