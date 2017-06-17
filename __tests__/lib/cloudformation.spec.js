@@ -1,8 +1,11 @@
 const AWS             = require('aws-sdk-mock')
 const cloudformation  = require('lib/cloudformation')
 
-describe('cloudformation', () => {
+describe('CloudformationPlugin', () => {
+  let plugin
+
   describe('filterOutputs', () => {
+    beforeAll( () => plugin = new cloudformation())
     it('should only return outputs present in the mask', () => {
       let mask = [ 'Output1', 'Output2', 'Output3' ]
       let ret = { 'Output1': 'Value1', 'Output3': 'Value3' }
@@ -12,7 +15,7 @@ describe('cloudformation', () => {
         { OutputKey: 'Output3', OutputValue: 'Value3' }
       ]
 
-      expect(cloudformation.filterOutputs(listToFilter, mask)).toEqual(ret)
+      expect(plugin.filterOutputs(listToFilter, mask)).toEqual(ret)
     })
   })
 
@@ -26,7 +29,7 @@ describe('cloudformation', () => {
         { LogicalResourceId: 'log3', PhysicalResourceId: 'phys3' }
       ]
 
-      expect(cloudformation.filterResources(listToFilter, mask)).toEqual(ret)
+      expect(plugin.filterResources(listToFilter, mask)).toEqual(ret)
     })
   })
 })
