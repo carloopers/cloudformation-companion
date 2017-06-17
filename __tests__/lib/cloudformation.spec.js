@@ -32,4 +32,26 @@ describe('CloudformationPlugin', () => {
       expect(plugin.filterResources(listToFilter, mask)).toEqual(ret)
     })
   })
+
+  describe('extractOutputs', () => {
+    it('should call filterOutputs with list of outputs and the mask', (done) => {
+      let stack = 'test'
+      let mask = [ 'key1', 'key2', 'key3' ]
+
+      let paramTest = { Outputs: [ { OutputKey: 'key1', OutputValue: 'val1' } ] }
+      let describeStacks = Promise.resolve({
+        Stacks: [  paramTest ]
+      })
+
+      AWS.mock('CloudFormation', 'describeStacks', describeStacks)
+      plugin = new cloudformation()
+      plugin.filterOutputs = jest.fn()
+
+      plugin.extractOutputs(stack, mask).then( res => {
+        expect(plugin.filterOutputs).toBeCalledWith(paramTest.Outputs, mask)
+        plugin.filterOutputs.mockClear()
+        done()
+      })
+    })
+  })
 })

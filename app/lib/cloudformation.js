@@ -19,6 +19,11 @@ class CloudformationPlugin {
         return { [r.LogicalResourceId]: r.PhysicalResourceId }
     }).reduce( (acc, newVal) => Object.assign({}, acc, newVal))
   }
+
+  extractOutputs(stack, outputs) {
+    return this.cloudformation.describeStacks({ StackName: stack }).promise()
+      .then( response => response.Stacks[0].Outputs ? this.filterOutputs(response.Stacks[0].Outputs, outputs) : {} )
+  }
 }
 
 module.exports = CloudformationPlugin
