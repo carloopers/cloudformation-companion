@@ -73,4 +73,75 @@ describe('CloudformationPlugin', () => {
       })
     })
   })
+
+  describe('extract', () => {
+    let stack, attributes, retvalues
+
+    beforeEach(() => {
+      stack = 'test'
+      plugin = new cloudformation()
+      plugin.extractOutputs = jest.fn(() => retvalues.Outputs)
+      plugin.extractResources = jest.fn(() => retvalues.Resources)
+    })
+
+    afterEach(() => {
+      plugin.extractResources.mockClear()
+      plugin.extractOutputs.mockClear()
+    })
+
+    it('should resolves to extracted values', (done) => {
+      expect.assertions(3)
+      attributes = {
+        Resources: [ 'log1', 'log2', 'log3' ],
+        Outputs: [ 'key1', 'key2', 'key3' ]
+      }
+      retvalues = {
+        Resources: { log1: 'test1' },
+        Outputs: { key1: 'test2' },
+      }
+
+      plugin.extract(stack, attributes).then( res => {
+        expect(plugin.extractResources).toBeCalledWith(stack, attributes.Resources)
+        expect(plugin.extractOutputs).toBeCalledWith(stack, attributes.Outputs)
+        expect(res).toEqual(retvalues)
+        done()
+      })
+    })
+
+    it('should return only Outputs when no resources specified', (done) => {
+      expect.assertions(3)
+      attributes = {
+        Outputs: [ 'key1', 'key2', 'key3' ]
+      }
+      retvalues = {
+        Outputs: { key1: 'test2' },
+        Resources: {}
+      }
+
+      plugin.extract(stack, attributes).then( res => {
+        expect(plugin.extractResources).not.toBeCalled()
+        expect(plugin.extractOutputs).toBeCalledWith(stack, attributes.Outputs)
+        expect(res).toEqual(retvalues)
+        done()
+      })
+    })
+
+    it('should return only Resources when no outputs specified', (done) => {
+      expect.assertions(3)
+      attributes = {
+        Resources: [ 'key1', 'key2', 'key3' ]
+      }
+      retvalues = {
+        Resources: { log1: 'test'},
+        Outputs: {}
+      }
+
+      plugin.extract(stack, attributes).then( res => {
+        expect(plugin.extractResources).toBeCalledWith(stack, attributes.Resources)
+        expect(plugin.extractOutputs).not.toBeCalled()
+        expect(res).toEqual(retvalues)
+        done()
+      })
+    })
+  })
 })
