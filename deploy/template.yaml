@@ -43,3 +43,7 @@ Resources:
       Timeout: 300
       Role: !GetAtt LambdaExecutionRole.Arn
       CodeUri: '../app'
+
+Outputs:
+  LambdaArn:
+    Value: !GetAtt Companion.Arn
