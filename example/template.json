@@ -3,7 +3,8 @@
   "Parameters": {
     "Lambda": {
       "Type": "String",
-      "Description": "ARN of the backend lambda function for the custom resource"
+      "Description": "ARN of the backend lambda function for the custom resource",
+      "Default": "arn:aws:lambda:ap-southeast-2:614382051240:function:infra-cfcompanion-reader-Companion-1OUPS1RK05EIB"
     }
   },
 
@@ -14,13 +15,10 @@
       "Type": "AWS::CloudFormation::CustomResource",
       "Properties": {
         "ServiceToken": { "Ref": "Lambda" },
-        "Cloudformation": [
-          {
-            "StackName": "<your_stack>",
-            "Outputs": [ "<output_from_stack>" ],
-            "Resources": [ "<resource_from_stack>" ]
-          }
-        ]
+        "Type": "Cloudformation",
+        "StackName": "<stack_name>",
+        "Outputs": [ "<output>" ],
+        "Resources": [ "<resource>" ]
       }
     }
   },
@@ -30,7 +28,7 @@
       "Value": {
         "Fn::GetAtt": [
           "Companion",
-          "Cloudformation::<your_stack>::Outputs::<output_from_stack>"
+          "Outputs::<resource>"
         ]
       }
     },
@@ -38,7 +36,7 @@
       "Value": {
         "Fn::GetAtt": [
           "Companion",
-          "Cloudformation::<your_stack>::Resources::<resource_from_stack>"
+          "Outputs::<resource>"
         ]
       }
     }

@@ -104,8 +104,8 @@ describe('CloudformationPlugin', () => {
         expect(plugin.extractResources).toBeCalledWith(stack, attributes.Resources)
         expect(plugin.extractOutputs).toBeCalledWith(stack, attributes.Outputs)
         expect(res).toEqual({
-          [ `Cloudformation::${stack}::Outputs::log1` ]: 'test1',
-          [ `Cloudformation::${stack}::Resources::key1` ]: 'test2'
+          "Outputs::log1": 'test1',
+          "Resources::key1": 'test2'
         })
         done()
       })
@@ -124,9 +124,7 @@ describe('CloudformationPlugin', () => {
       plugin.extract({ StackName: stack, Outputs: attributes.Outputs, Resources: attributes.Resources}).then( res => {
         expect(plugin.extractResources).not.toBeCalled()
         expect(plugin.extractOutputs).toBeCalledWith(stack, attributes.Outputs)
-        expect(res).toEqual({
-          [ `Cloudformation::${stack}::Outputs::key1` ]: 'test2'
-        })
+        expect(res).toEqual({ "Outputs::key1": 'test2' })
         done()
       })
     })
@@ -144,9 +142,7 @@ describe('CloudformationPlugin', () => {
       plugin.extract({ StackName: stack, Outputs: attributes.Outputs, Resources: attributes.Resources}).then( res => {
         expect(plugin.extractOutputs).not.toBeCalled()
         expect(plugin.extractResources).toBeCalledWith(stack, attributes.Resources)
-        expect(res).toEqual({
-          [ `Cloudformation::${stack}::Resources::log1` ]: 'test'
-        })
+        expect(res).toEqual({ "Resources::log1": 'test' })
         done()
       })
     })

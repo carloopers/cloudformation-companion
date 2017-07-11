@@ -12,19 +12,19 @@ Resources:
     Version: "1.0"
     Properties:
       ServiceToken: !Ref Lambda
-      Cloudformation:
-        - StackName: '<your_stack>'
-          Resources: [ '<resource_from_stack>' ]
-          Outputs: [ '<output_from_stack>' ]
+      Type: Cloudformation
+      StackName: <stack_name>
+      Resources: [ '<resource_from_stack>' ]
+      Outputs: [ '<output_from_stack>' ]
 
 Outputs:
   Output:
     Value:
       Fn::GetAtt:
         - "Companion"
-        - "Cloudformation::<your_stack>::Outputs::<output_from_stack>"
+        - "Outputs::<output_from_stack>"
   Resource:
     Value:
       Fn::GetAtt:
         - "Companion"
-        - "Cloudformation::<your_stack>::Resources::<resource_from_stack>"
+        - "Resources::<resource_from_stack>"

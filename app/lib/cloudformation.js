@@ -39,8 +39,8 @@ class CloudformationPlugin {
 
         let promises = Promise.all(operations)
           .then( values => {
-            let outputs = Object.keys(values[0]).map( key => { return { [`Cloudformation::${payload.StackName}::Outputs::${key}`]: values[0][key] } } )
-            let resources = Object.keys(values[1]).map( key => { return { [`Cloudformation::${payload.StackName}::Resources::${key}`]: values[1][key] } } )
+            let outputs = Object.keys(values[0]).map( key => { return { [`Outputs::${key}`]: values[0][key] } } )
+            let resources = Object.keys(values[1]).map( key => { return { [`Resources::${key}`]: values[1][key] } } )
             resolve(outputs.concat(resources).reduce( (acc, n) => Object.assign({}, acc, n) ))
           })
           .catch( reason => reject(reason))

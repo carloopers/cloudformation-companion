@@ -47,8 +47,8 @@ The reason why attributes are not nested is because `Fn::GetAtt` takes only two 
 
 The way we went around that, is to compose the key of each attribute with the following format:
 
-    <plugin>::<stack_name>::<Outputs|Resources>::<resource_or_output_from_stack>
-        eg: Cloudformation::mystack::Outputs::LoadBalancer
+    <Outputs|Resources>::<resource_or_output_from_stack>
+        eg: Outputs::LoadBalancer
 
 
 ## Plugins
@@ -59,6 +59,7 @@ The cloudformation plugin takes some inputs as properties to know where and to f
 
 The attributes it takes are:
 
+    Type: Cloudformation
     StackName: <your_stack>
     Outputs: <array_of_output_key>
     Resources: <array_of_output_key>
